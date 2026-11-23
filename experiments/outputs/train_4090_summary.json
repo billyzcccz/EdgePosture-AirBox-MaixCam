@@ -1,0 +1,30 @@
+{
+  "side_pose_finetune_yolov8n": {
+    "train_images": 218,
+    "val_images": 55,
+    "box_map50": 0.9906,
+    "box_map50_95": 0.7508,
+    "pose_map50": 0.9906,
+    "pose_map50_95": 0.9906
+  },
+  "side_pose_finetune_yolov8s": {
+    "train_images": 218,
+    "val_images": 55,
+    "box_map50": 0.992,
+    "box_map50_95": 0.7616,
+    "pose_map50": 0.992,
+    "pose_map50_95": 0.9909
+  },
+  "front_rgb_cls_stratified": {
+    "train_images": 3850,
+    "val_images": 963,
+    "top1_acc": 0.9439,
+    "top5_acc": 1.0
+  },
+  "front_rgb_cls_cross_subject": {
+    "train_images": 3780,
+    "val_images": 899,
+    "top1_acc": 0.4416,
+    "top5_acc": 1.0
+  }
+}

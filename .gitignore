@@ -40,6 +40,11 @@ edge_inference/cpp/**/build/
 Thumbs.db
 *.swp
 
+# Experiment Caches & Training Runs
+experiments/cache/
+experiments/runs/
+experiments/datasets/
+
 # Local Tooling Artifacts
 .agent/
 .gemini/

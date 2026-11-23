@@ -1,0 +1,120 @@
+{
+  "model_sizes_mb": {
+    "yolov8n_pt_fp32": 6.83,
+    "yolov8n_onnx_fp32": 13.51,
+    "yolov8n_onnx_int8_static": 3.82
+  },
+  "front_detection": {
+    "yolov8n_pt_fp32": {
+      "total_images": 4813,
+      "person_detection_rate_pct": 100.0,
+      "upper_body_complete_pct": 100.0,
+      "hip_visible_pct": 1.66,
+      "knee_visible_pct": 0.04
+    },
+    "mediapipe_pose": {
+      "total_images": 4813,
+      "person_detection_rate_pct": 99.92,
+      "upper_body_complete_pct": 99.92,
+      "hip_visible_pct": 2.37,
+      "knee_visible_pct": 1.48
+    },
+    "yolov8n_onnx_fp32_sub": {
+      "total_images": 300,
+      "person_detection_rate_pct": 100.0,
+      "upper_body_complete_pct": 100.0,
+      "hip_visible_pct": 2.0,
+      "knee_visible_pct": 0.0
+    },
+    "yolov8n_onnx_int8_sub": {
+      "total_images": 300,
+      "person_detection_rate_pct": 0.0,
+      "upper_body_complete_pct": 0.0,
+      "hip_visible_pct": 0.0,
+      "knee_visible_pct": 0.0
+    }
+  },
+  "side_localization_unique": {
+    "yolov8n_pt_fp32": {
+      "total_images": 273,
+      "detection_rate": 99.63,
+      "nme_hip": 0.1797,
+      "nme_shoulder": 0.0844,
+      "nme_ear": 0.0437,
+      "nme_mean": 0.1036,
+      "pck_015": 80.15,
+      "pck_020": 88.39
+    },
+    "yolov8n_onnx_fp32": {
+      "total_images": 273,
+      "detection_rate": 99.63,
+      "nme_hip": 0.1797,
+      "nme_shoulder": 0.0844,
+      "nme_ear": 0.0437,
+      "nme_mean": 0.1035,
+      "pck_015": 80.02,
+      "pck_020": 88.39
+    },
+    "yolov8n_onnx_int8": {
+      "total_images": 273,
+      "detection_rate": 0.0,
+      "nme_hip": 1.0,
+      "nme_shoulder": 1.0,
+      "nme_ear": 1.0,
+      "nme_mean": 1.0,
+      "pck_015": 0.0,
+      "pck_020": 0.0
+    },
+    "mediapipe_pose": {
+      "total_images": 273,
+      "detection_rate": 95.24,
+      "nme_hip": 0.2439,
+      "nme_shoulder": 0.0917,
+      "nme_ear": 0.0836,
+      "nme_mean": 0.1397,
+      "pck_015": 74.23,
+      "pck_020": 83.08
+    }
+  },
+  "side_localization_noisy_all655": {
+    "yolov8n_pt_fp32": {
+      "total_images": 655,
+      "detection_rate": 99.39,
+      "nme_hip": 0.1885,
+      "nme_shoulder": 0.0845,
+      "nme_ear": 0.0444,
+      "nme_mean": 0.1071,
+      "pck_015": 79.58,
+      "pck_020": 87.85
+    },
+    "yolov8n_onnx_int8": {
+      "total_images": 655,
+      "detection_rate": 0.0,
+      "nme_hip": 1.0,
+      "nme_shoulder": 1.0,
+      "nme_ear": 1.0,
+      "nme_mean": 1.0,
+      "pck_015": 0.0,
+      "pck_020": 0.0
+    },
+    "mediapipe_pose": {
+      "total_images": 655,
+      "detection_rate": 95.73,
+      "nme_hip": 0.2415,
+      "nme_shoulder": 0.09,
+      "nme_ear": 0.0861,
+      "nme_mean": 0.1392,
+      "pck_015": 74.64,
+      "pck_020": 82.78
+    }
+  },
+  "latency_ms_cpu_warmup_skipped": {
+    "mediapipe_pose_front_ms": 49.2,
+    "onnx_fp32_front_ms": 78.06,
+    "onnx_int8_front_ms": 70.55,
+    "mediapipe_pose_side_ms": 50.7,
+    "onnx_fp32_side_ms": 88.72,
+    "onnx_int8_side_ms": 68.33,
+    "pytorch_gpu_front_ms": 16.98
+  }
+}

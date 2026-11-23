@@ -1,0 +1,122 @@
+{
+  "cross_domain_generalization": {
+    "YOLO_RawXY_LogReg": {
+      "extract_to_mb_acc": 62.63,
+      "extract_to_mb_f1": 62.97,
+      "mb_to_extract_acc": 75.85,
+      "mb_to_extract_f1": 76.78
+    },
+    "YOLO_RawXY_SVM-RBF": {
+      "extract_to_mb_acc": 51.5,
+      "extract_to_mb_f1": 52.55,
+      "mb_to_extract_acc": 58.7,
+      "mb_to_extract_f1": 58.17
+    },
+    "YOLO_RawXY_RandomForest": {
+      "extract_to_mb_acc": 54.51,
+      "extract_to_mb_f1": 52.73,
+      "mb_to_extract_acc": 61.3,
+      "mb_to_extract_f1": 61.25
+    },
+    "YOLO_RawXY_MLP": {
+      "extract_to_mb_acc": 51.28,
+      "extract_to_mb_f1": 50.82,
+      "mb_to_extract_acc": 60.63,
+      "mb_to_extract_f1": 59.74
+    },
+    "YOLO_NormGeo_LogReg": {
+      "extract_to_mb_acc": 59.84,
+      "extract_to_mb_f1": 60.65,
+      "mb_to_extract_acc": 68.41,
+      "mb_to_extract_f1": 68.88
+    },
+    "YOLO_NormGeo_SVM-RBF": {
+      "extract_to_mb_acc": 52.84,
+      "extract_to_mb_f1": 55.01,
+      "mb_to_extract_acc": 54.97,
+      "mb_to_extract_f1": 56.1
+    },
+    "YOLO_NormGeo_RandomForest": {
+      "extract_to_mb_acc": 56.28,
+      "extract_to_mb_f1": 57.19,
+      "mb_to_extract_acc": 64.13,
+      "mb_to_extract_f1": 64.46
+    },
+    "YOLO_NormGeo_MLP": {
+      "extract_to_mb_acc": 56.95,
+      "extract_to_mb_f1": 58.14,
+      "mb_to_extract_acc": 68.49,
+      "mb_to_extract_f1": 68.99
+    },
+    "MediaPipe_NormGeo_LogReg": {
+      "extract_to_mb_acc": 58.18,
+      "extract_to_mb_f1": 59.12,
+      "mb_to_extract_acc": 64.22,
+      "mb_to_extract_f1": 64.43
+    },
+    "MediaPipe_NormGeo_SVM-RBF": {
+      "extract_to_mb_acc": 53.5,
+      "extract_to_mb_f1": 55.89,
+      "mb_to_extract_acc": 52.39,
+      "mb_to_extract_f1": 54.36
+    },
+    "MediaPipe_NormGeo_RandomForest": {
+      "extract_to_mb_acc": 56.51,
+      "extract_to_mb_f1": 60.01,
+      "mb_to_extract_acc": 61.95,
+      "mb_to_extract_f1": 63.01
+    },
+    "MediaPipe_NormGeo_MLP": {
+      "extract_to_mb_acc": 55.51,
+      "extract_to_mb_f1": 59.14,
+      "mb_to_extract_acc": 62.61,
+      "mb_to_extract_f1": 62.87
+    }
+  },
+  "quant_front_subset_300_rf": {
+    "Mixed_DecodeFP32": {
+      "samples": 300,
+      "accuracy_mean": 82.0,
+      "accuracy_std": 3.56,
+      "macro_f1_mean": 81.96,
+      "macro_f1_std": 3.63
+    },
+    "Mixed_HeadFP32": {
+      "samples": 300,
+      "accuracy_mean": 83.33,
+      "accuracy_std": 4.83,
+      "macro_f1_mean": 83.34,
+      "macro_f1_std": 4.81
+    }
+  },
+  "quant_side_unique_273": {
+    "Mixed_DecodeFP32_SVM-RBF": {
+      "samples": 273,
+      "accuracy_mean": 85.71,
+      "accuracy_std": 1.41,
+      "macro_f1_mean": 84.75,
+      "macro_f1_std": 1.86
+    },
+    "Mixed_DecodeFP32_RandomForest": {
+      "samples": 273,
+      "accuracy_mean": 82.04,
+      "accuracy_std": 1.5,
+      "macro_f1_mean": 80.17,
+      "macro_f1_std": 2.04
+    },
+    "Mixed_HeadFP32_SVM-RBF": {
+      "samples": 273,
+      "accuracy_mean": 85.35,
+      "accuracy_std": 1.65,
+      "macro_f1_mean": 84.25,
+      "macro_f1_std": 1.29
+    },
+    "Mixed_HeadFP32_RandomForest": {
+      "samples": 273,
+      "accuracy_mean": 82.77,
+      "accuracy_std": 1.56,
+      "macro_f1_mean": 81.23,
+      "macro_f1_std": 2.1
+    }
+  }
+}

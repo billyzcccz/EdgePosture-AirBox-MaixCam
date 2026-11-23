@@ -1,0 +1,90 @@
+{
+  "ONNX_FP32": {
+    "size_mb": 13.51,
+    "front_sub_300": {
+      "total_images": 300,
+      "person_detection_rate_pct": 100.0,
+      "upper_body_complete_pct": 100.0,
+      "hip_visible_pct": 2.0,
+      "knee_visible_pct": 0.0
+    },
+    "side_unique_273": {
+      "total_images": 273,
+      "detection_rate": 99.63,
+      "nme_hip": 0.1797,
+      "nme_shoulder": 0.0844,
+      "nme_ear": 0.0437,
+      "nme_mean": 0.1035,
+      "pck_015": 80.02,
+      "pck_020": 88.39
+    },
+    "cpu_latency_front_ms": 84.63,
+    "cpu_latency_side_ms": 79.31
+  },
+  "ONNX_INT8_Full": {
+    "size_mb": 3.82,
+    "front_sub_300": {
+      "total_images": 300,
+      "person_detection_rate_pct": 0.0,
+      "upper_body_complete_pct": 0.0,
+      "hip_visible_pct": 0.0,
+      "knee_visible_pct": 0.0
+    },
+    "side_unique_273": {
+      "total_images": 273,
+      "detection_rate": 0.0,
+      "nme_hip": 1.0,
+      "nme_shoulder": 1.0,
+      "nme_ear": 1.0,
+      "nme_mean": 1.0,
+      "pck_015": 0.0,
+      "pck_020": 0.0
+    },
+    "cpu_latency_front_ms": 109.76,
+    "cpu_latency_side_ms": 82.96
+  },
+  "ONNX_INT8_Mixed_DecodeFP32": {
+    "size_mb": 3.93,
+    "front_sub_300": {
+      "total_images": 300,
+      "person_detection_rate_pct": 100.0,
+      "upper_body_complete_pct": 100.0,
+      "hip_visible_pct": 2.0,
+      "knee_visible_pct": 0.0
+    },
+    "side_unique_273": {
+      "total_images": 273,
+      "detection_rate": 100.0,
+      "nme_hip": 0.1681,
+      "nme_shoulder": 0.0873,
+      "nme_ear": 0.0446,
+      "nme_mean": 0.1013,
+      "pck_015": 81.27,
+      "pck_020": 88.26
+    },
+    "cpu_latency_front_ms": 60.9,
+    "cpu_latency_side_ms": 58.17
+  },
+  "ONNX_INT8_Mixed_HeadFP32": {
+    "size_mb": 6.96,
+    "front_sub_300": {
+      "total_images": 300,
+      "person_detection_rate_pct": 100.0,
+      "upper_body_complete_pct": 100.0,
+      "hip_visible_pct": 1.67,
+      "knee_visible_pct": 0.0
+    },
+    "side_unique_273": {
+      "total_images": 273,
+      "detection_rate": 100.0,
+      "nme_hip": 0.1678,
+      "nme_shoulder": 0.0866,
+      "nme_ear": 0.0445,
+      "nme_mean": 0.1009,
+      "pck_015": 81.62,
+      "pck_020": 88.75
+    },
+    "cpu_latency_front_ms": 64.59,
+    "cpu_latency_side_ms": 61.23
+  }
+}

@@ -51,6 +51,10 @@ EdgePosture-AirBox-MaixCam/
 ├── hardware/                 # 3D CAD models (.step, .stl, SolidWorks parts)
 │   ├── README.md
 │   └── cad_parts/
+├── experiments/              # Quantization diagnosis, multi-view MSP & 4090 ablations
+│   ├── README.md
+│   ├── outputs/              # Verified JSON summaries & 300-DPI ablation figures
+│   └── *.py                  # Reproducible benchmark, quantization & training scripts
 ├── .env.example
 ├── .gitignore
 ├── requirements.txt
@@ -106,7 +110,47 @@ Observed `bmrt_test` TPU kernel measurements on our AirBox unit (`yolov8n_pose`,
 | Model Precision | Model Size | NPU Launch Total Time | `calculate` Time | Notes |
 | :--- | :--- | :--- | :--- | :--- |
 | `yolov8n_pose_1684x_f32.bmodel` | 16 MB | 13.34 ms | 13.34 ms | Reliable keypoint detection on test images |
-| `yolov8n_pose_1684x_int8_sym.bmodel` | 6.3 MB | 2.23 ms | 2.24 ms | 6x faster kernel, but symmetric INT8 requires calibration tuning / mixed-precision head to avoid recall drop |
+| `yolov8n_pose_1684x_int8_sym.bmodel` | 6.3 MB | 2.23 ms | 2.24 ms | 6x faster kernel, but symmetric INT8 requires mixed-precision decode FP32 (diagnosed below) |
+
+## Experimental Validation & Ablations
+
+To systematically diagnose the INT8 recall collapse observed during edge deployment and evaluate posture classification beyond single-room splits, we provide a full reproducible benchmark suite in [`experiments/`](experiments/README.md) covering three public/multi-view datasets (**4,813** front-view desktop frames, **273** deduplicated side-view spine-keypoint frames, and **5,600** uniformly subsampled frames from the 49,798-frame 8-view 7-class **MSP** sitting posture corpus).
+
+### 1. INT8 Quantization Collapse Diagnosis & Mixed-Precision Recovery
+
+Static full-graph ONNX INT8 quantization (`3.82 MB`) reproduces the exact `0.0%` detection failure seen on symmetric INT8 compilation. Isolating only the 72 post-convolution decode/DFL/Sigmoid operators inside `/model.22/` in FP32 (`Mixed_DecodeFP32`, `3.93 MB`) restores full detection with a `-70.9%` footprint reduction and nearly `2x` CPU speedup on multi-view full-body frames (`n=1,120`):
+
+| ONNX Variant (`yolov8n-pose`) | Size | Side-273 Det / `PCK@0.15` | MSP-1,120 Det | MSP CPU Latency | MSP `PCK@0.10` vs FP32 | Downstream 7-Class Acc (SVM / RF) |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `ONNX_FP32` | 13.51 MB | 99.63% / 80.02% | 100.0% | 85.21 ms | Baseline | 87.86% / 86.79% |
+| `ONNX_INT8_Full` | 3.82 MB | **0.0% / 0.0%** | **0.0%** | 28.08 ms | 0.0% | Failed |
+| `ONNX_INT8_Mixed_DecodeFP32` | **3.93 MB** | **100.0% / 81.27%** | **100.0%** | **43.44 ms** | **97.73%** | **87.14% / 86.25%** |
+| `ONNX_INT8_Mixed_HeadFP32` | 6.96 MB | 100.0% / 81.62% | 100.0% | 49.59 ms | 99.03% | 88.21% / 86.34% |
+
+![Quantization Recovery](experiments/outputs/fig3_quantization_recovery.png)
+
+### 2. Cross-Subject & Cross-View Posture Generalization (`MSP` 5,600 Frames, 7 Classes)
+
+While end-to-end RGB classification (`YOLOv8n-cls`, RTX 4090) scores `95.45%` within the same subject/environment (`Block-Temporal`), it collapses to **`31.00%`** on an unseen subject and hallway environment (`view1-7 -> view8`). Our 24-dim torso- & view-normalized geometric representation (`FullBody_NormGeo`) raises unseen subject/environment accuracy to **`80.71%`** (`SVM-RBF`, Macro-F1 `80.83%`):
+
+| Evaluation Protocol | `YOLOv8n-cls` (RGB, 4090) | `RawXY` (51-dim) | `FullBody_NormGeo` (24-dim) | 3D GT `Hkeypoints` Oracle |
+| :--- | :---: | :---: | :---: | :---: |
+| Block-Temporal (`3,360 -> 1,120`, 20% gap) | **95.45%** | 88.84% (MLP) | 85.98% (SVM-RBF) | 97.32% (SVM-RBF) |
+| Cross-Subject & Room (`view1-7 -> view8`) | 31.00% | 50.71% (SVM) / 56.14% (MLP) | **80.71%** (SVM-RBF) | 94.00% (SVM-RBF) |
+| Reverse Cross-Subject (`view8 -> view1-7`) | 30.86% | 58.41% (SVM) | **70.22%** (SVM-RBF) | 81.65% (SVM-RBF) |
+| Pure Cross-View LOVO (`view1..7` unseen angle) | `view3`: 54.86% / `view7`: 62.29% | 51.67% (RF) | **63.31%** (RF) | 67.45% (LogReg) |
+
+- **Desktop Front/Side Benchmarks**: On `front_view_classification` (4,813 frames, 5 classes), `NormGeo + RandomForest` reaches **`91.52% ± 0.42%`** 5-fold CV accuracy (`vs. 74.32%` legacy threshold baseline with `0.0%` upright recall). On `side_view_keypoints` (273 deduplicated frames), 4090 fine-tuned `YOLOv8n-pose` achieves **`0.9906` pose mAP@50** and `86.39%` 5-fold `Good`/`Bad` accuracy.
+- **Open Research Boundary**: Under pure Leave-One-View-Out testing on unseen camera azimuths (`view3` 90° side = `52.14%`, `view6` = `48.14%`), single-frame 2D projections remain ambiguous between forward trunk flexion and lateral camera viewing angle (matching the drop seen even with unaligned 3D skeletons), motivating future camera-azimuth canonicalization or temporal filtering.
+
+![MSP Generalization Gap](experiments/outputs/fig4_msp_generalization_gap.png)
+
+<details>
+<summary>Additional Figure: Front-View 5-Class Confusion Matrix (91.52% 5-Fold CV)</summary>
+
+![Front-View Confusion Matrix](experiments/outputs/fig1_confusion_matrix_front5.png)
+
+</details>
 
 ## Hardware BOM (Prototype)
 
